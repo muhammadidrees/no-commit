@@ -10,14 +10,14 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:no-commit.helloWorld"
+    "onCommand:no-commit.initialize"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "no-commit.helloWorld",
-        "title": "Hello World"
+        "command": "no-commit.initialize",
+        "title": "Initialize No Commit for project"
       }
     ]
   },
