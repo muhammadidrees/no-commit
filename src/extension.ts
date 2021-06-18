@@ -16,8 +16,18 @@ export function activate(context: vscode.ExtensionContext) {
 	// The commandId parameter must match the command field in package.json
 	let disposable = vscode.commands.registerCommand('no-commit.initialize', () => {
 
+		let path = vscode.workspace.workspaceFolders![0].uri.path.substring(1);
+		
+		console.log(path);
 		// checks if git is initialized
-		if (fs.existsSync(".git")) {
+		if (fs.existsSync(path + "/.git")) {
+			// fs.appendFile('.git/hooks/chay', 'Hello World!', function (err) {
+			// 	if (err) {
+			// 		vscode.window.showWarningMessage(err.message);
+			// 	} else {
+			// 		vscode.window.showInformationMessage('No commit initialized Successfully!');
+			// 	}
+			// });
 			// File exists in path
 			console.log("cool");
 		  } else {
@@ -27,7 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
-		vscode.window.showInformationMessage('No commit initialized Successfully!');
+		// vscode.window.showInformationMessage('No commit initialized Successfully!');
 	});
 
 	context.subscriptions.push(disposable);
