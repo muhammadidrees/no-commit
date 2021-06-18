@@ -3,6 +3,16 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 
+let hook = `#!/bin/sh
+
+PATTERN="^\\+.*(NOCOMIT).*"
+
+if git diff --cached | grep -Eq "^\\+.*(NOCOMIT).*"; then
+	echo "Commit rejected kindly remove 'NOCOMIT' before commiting"
+	exit 1
+fi
+`;
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -19,25 +29,22 @@ export function activate(context: vscode.ExtensionContext) {
 		let path = vscode.workspace.workspaceFolders![0].uri.path.substring(1);
 		
 		console.log(path);
+
 		// checks if git is initialized
 		if (fs.existsSync(path + "/.git")) {
-			// fs.appendFile('.git/hooks/chay', 'Hello World!', function (err) {
-			// 	if (err) {
-			// 		vscode.window.showWarningMessage(err.message);
-			// 	} else {
-			// 		vscode.window.showInformationMessage('No commit initialized Successfully!');
-			// 	}
-			// });
-			// File exists in path
-			console.log("cool");
+
+
+			fs.appendFile(path +'/.git/hooks/pre-commit', hook, function (err) {
+				if (err) {
+					vscode.window.showWarningMessage(err.message);
+				} else {
+					vscode.window.showInformationMessage('No commit initialized Successfully!');
+				}
+			});
 		  } else {
 			  vscode.window.showWarningMessage('Git not initialized!');
 		  }
 		  
-
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		// vscode.window.showInformationMessage('No commit initialized Successfully!');
 	});
 
 	context.subscriptions.push(disposable);
